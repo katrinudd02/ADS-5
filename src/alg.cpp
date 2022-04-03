@@ -54,8 +54,7 @@ std::string infx2pstfx(std::string inf) {
         pr = prioritet(inf[i]);
         if (is_digit(inf[i])) {
             out.push_back(inf[i]);
-        }
-        else if (pr != -1) {
+        } else if (pr != -1) {
             if (out.length() != 0 && is_digit(out.back())) {
                 out.push_back(' ');
             }
@@ -67,12 +66,9 @@ std::string infx2pstfx(std::string inf) {
                 if (S.get() == '(') {
                     S.pop();
                 }
-            }
-            else if (pr == 0 || pr > prioritet(S.get()) || S.isEmpty()) {
+            } else if (pr == 0 || pr > prioritet(S.get()) || S.isEmpty()) {
                 S.push(inf[i]);
-
-            }
-            else {
+            } else {
                 while (!S.isEmpty() && prioritet(S.get()) >= pr) {
                     out.push_back(S.get());
                     S.pop();
@@ -82,9 +78,6 @@ std::string infx2pstfx(std::string inf) {
                 }
             }
         }
-    }
-    if (inf.length() != 0 && is_digit(inf[inf.length() - 1])) {
-        out.push_back(' ');
     }
     while (!S.isEmpty()) {
         out.push_back(S.get());
@@ -99,22 +92,28 @@ int eval(std::string out) {
     int i = 0;
     int a = 0;
     int b = 0;
-    int dig = 0;
+    int dig = -1;
     int len = out.length();
     while (i < len) {
         if (prioritet(out[i]) == 2 || prioritet(out[i]) == 3) {
-            b = S.get();
-            S.pop();
+            if (dig == -1) {
+                b = S.get();
+                S.pop();
+            } else {
+                b = dig;
+                dig = -1;
+            }
             a = S.get();
             S.pop();
             S.push(calculator(out[i], a, b));
-        }
-        else if (out[i] == ' ') {
+        } else if (out[i] == ' ') {
             S.push(dig);
-            dig = 0;
-        }
-        else {
+            dig = -1;
+        } else {
             if (is_digit(out[i])) {
+                if (dig == -1) {
+                    dig = 0;
+                }
                 dig = dig * 10 + (int)out[i] - 48;
             }
         }

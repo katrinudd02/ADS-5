@@ -1,24 +1,23 @@
-// Copyright 2021 NNTU-CS
-#include <string>
-#include <map>
-#include "tstack.h"
 #include <iostream>
 #include <cctype>
-#include <stdlib.h>
-#include <conio.h>
 #include <cstdio>
 #include <stack>
-
-using namespace std;
+#include <string>
+#include <map>
+#include <stdlib.h>
+#include <conio.h>
+#include "tstack.h"
 
 int prioritet(char v) {
     switch (v) {
-        case '(': return 1;
+        case '(':
+        case ')': return 1;
         case '+':
         case '-': return 2;
         case '*':
         case '/': return 3;
     }
+    return -1;
 }
 
 bool is_op(char c) {
@@ -47,14 +46,15 @@ std::string infx2pstfx(std::string inf) {
                 if (S.empty() || prioritet(S.top()) < prioritet(inf[i])) {
                     S.push(inf[i]);
                 } else {
-                    while (!S.empty() && (prioritet(S.top()) >= prioritet(inf[i]))) {
+                    while (!S.empty() && (prioritet(S.top()) 
+                                          >= prioritet(inf[i]))) {
                         out[j++] = S.top();
                         S.pop();
                     }
                     S.push(inf[i]);
                 }
             } else {
-                if (inf[i] == '('){
+                if (inf[i] == '(') {
                     S.push(inf[i]);
                 } else {
                     if (inf[i] == ')') {
@@ -85,37 +85,15 @@ std::string infx2pstfx(std::string inf) {
             j++;
         }
     }
-
 }
 
 int eval(std::string out) {
-    int j = 0, c = 0, r1 = 0, r2 = 0;
-    stack <double> S;
-    stack <double> S1;
-    char num[256];
-    char* pEnd = nullptr;
-    while (out[j] != '\0') {
-        if (out[j] == '_') {
-            ++j;
-            continue;
-        }
-        if (out[j] >= '0' && out[j] <= '9') {
-            long iNum = strtol(&out[j], &pEnd, 10);
-            S.push(iNum);
-            j += pEnd - &out[j];
-        } else {
-            if (is_op(out[j])) {
-                r1 = S.top(); S.pop();
-                r2 = S.top(); S.pop();
-                switch (out[j]) {
-                    case '+': S.push(r2 + r1); break;
-                    case '-': S.push(r2 - r1); break;
-                    case '*': S.push(r2 * r1); break;
-                    case '/': S.push(r2 / r1); break;
-                }
-            }
-            ++j;
-        }
-    }
+    int result = 0;
+    TStack <int, 100> resultStack;
+    int i;
+    for (; i < out.size(); i++) {
+        if (prioritet(out[i]) == -1) {
+            resultStack.push(out[i] - '0');
+    
     return 0;
 }

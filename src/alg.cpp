@@ -73,6 +73,7 @@ std::string infx2pstfx(std::string inf) {
 }
 
 int eval(std::string out) {
+    TStack <int, 100> S;
     int result = 0;
     int i = 0;
     int a = 0;

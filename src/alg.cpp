@@ -61,6 +61,7 @@ std::string infx2pstfx(std::string inf) {
             if (pr == 1) {
                 while (S.get() != '(' && !S.isEmpty()) {
                     out.push_back(S.get());
+                    out.push_back(' ');
                     S.pop();
                 }
                 if (S.get() == '(') {
@@ -68,9 +69,11 @@ std::string infx2pstfx(std::string inf) {
                 }
             } else if (pr == 0 || pr > prioritet(S.get()) || S.isEmpty()) {
                 S.push(inf[i]);
+
             } else {
                 while (!S.isEmpty() && prioritet(S.get()) >= pr) {
                     out.push_back(S.get());
+                    out.push_back(' ');
                     S.pop();
                 }
                 if (pr == 2 || pr == 3) {
@@ -79,10 +82,15 @@ std::string infx2pstfx(std::string inf) {
             }
         }
     }
+    if (inf.length() != 0 && is_digit(inf[inf.length() - 1])) {
+        out.push_back(' ');
+    }
     while (!S.isEmpty()) {
         out.push_back(S.get());
+        out.push_back(' ');
         S.pop();
     }
+    out.pop_back();
     return out;
 }
 
@@ -106,7 +114,7 @@ int eval(std::string out) {
             a = S.get();
             S.pop();
             S.push(calculator(out[i], a, b));
-        } else if (out[i] == ' ') {
+        } else if (out[i] == ' ' && dig != -1) {
             S.push(dig);
             dig = -1;
         } else {
@@ -114,7 +122,7 @@ int eval(std::string out) {
                 if (dig == -1) {
                     dig = 0;
                 }
-                dig = dig * 10 + static_cast<int>(out[i]) - 48;
+                dig = dig * 10 + (int)out[i] - 48;
             }
         }
         i++;

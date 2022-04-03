@@ -114,7 +114,7 @@ int eval(std::string out) {
                 if (dig == -1) {
                     dig = 0;
                 }
-                dig = dig * 10 + (int)(out[i]) - 48;
+                dig = dig * 10 + static_cast<int>(out[i]) - 48;
             }
         }
         i++;

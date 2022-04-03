@@ -38,62 +38,37 @@ int calculator(char symbol, int a, int b) {
 }
 
 std::string infx2pstfx(std::string inf) {
-    stack <char> S;
+    stack <char, 100> S;
     std::string out;
-    //int c = getchar(inf);
     int i = 0, j = 0;
     for (; inf[i] != '\0'; ++i) {
-        if (is_digit(inf[i])) {
-            out[j] = inf[i];
-            ++j;
+        int pr = prioritet(inf[i]);
+        if (pr == 0 || p > prioritet(S.get()) || S.isEmpty()) {
+            out.push(inf[i]);
         } else {
-            if (j != 0 && out[j - 1] >= '0' && out[j - 1] <= '9') {
-                out[j] = '_';
-                ++j;
-            }
-            if (is_op(inf[i])) {
-                if (S.empty() || prioritet(S.top()) < prioritet(inf[i])) {
-                    S.push(inf[i]);
-                } else {
-                    while (!S.empty() && (prioritet(S.top())
-                                          >= prioritet(inf[i]))) {
-                        out[j++] = S.top();
-                        S.pop();
-                    }
-                    S.push(inf[i]);
+            if (pr == 1) {
+                while (S.get() != '(') {
+                    out.push_back(' ');
+                    out.push_back(S.get());
+                    S.pop();
                 }
+                S.pop();
             } else {
-                if (inf[i] == '(') {
-                    S.push(inf[i]);
-                } else {
-                    if (inf[i] == ')') {
-                        if (S.empty() || S.top() == '(') {
-                            cout << "Input error!";
-                            _getch();
-                            exit(1);
-                        } else {
-                            while (S.top() != '(') {
-                                out[j] = S.top();
-                                S.pop();
-                                j++;
-                            }
-                        }
-                        S.pop();
-                    }
+                while (prioritet(S.get()) >= pr) {
+                    out.push_back(' ');
+                    out.push_back(S.get());
+                    S.pop();
                 }
+                S.push(inf[i]);
             }
         }
     }
-    while (!S.empty()) {
-        if (S.top() == '(') {
-            cout << "Input error!";
-            _getch(); exit(1);
-        } else {
-            out[j] = S.top();
-            S.pop();
-            j++;
-        }
+    while (!S.isEmpty()) {
+        out.push_back(' ');
+        out.push_back(S.get());
+        S.pop();
     }
+    return out;
 }
 
 int eval(std::string out) {

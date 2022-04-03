@@ -11,84 +11,59 @@
 
 using namespace std;
 
-int prioritet(char v)
-{
-    switch (v)
-    {
-    case '(': return 1;
-    case '+':
-    case '-': return 2;
-    case '*':
-    case '/': return 3;
+int prioritet(char v) {
+    switch (v) {
+        case '(': return 1;
+        case '+':
+        case '-': return 2;
+        case '*':
+        case '/': return 3;
     }
 }
 
-bool is_op(char c)
-{
+bool is_op(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-bool is_digit(char c)
-{
+bool is_digit(char c) {
     return c >= '0' && c <= '9';
 }
 
 std::string infx2pstfx(std::string inf) {
     stack <char> S;
-    char* out[256];
+    std::string out;
     //int c = getchar(inf);
     int i = 0, j = 0;
-    for (; inf[i] != '\0'; ++i)
-    {
-        if (is_digit(inf[i]))
-        {
+    for (; inf[i] != '\0'; ++i) {
+        if (is_digit(inf[i])) {
             out[j] = inf[i];
             ++j;
-        }
-        else
-        {
-            if (j != 0 && out[j - 1] >= '0' && out[j - 1] <= '9')
-            {
+        } else {
+            if (j != 0 && out[j - 1] >= '0' && out[j - 1] <= '9') {
                 out[j] = '_';
                 ++j;
             }
-
-            if (is_op(inf[i]))
-            {
-                if (S.empty() || prioritet(S.top()) < prioritet(inf[i]))
-                {
+            if (is_op(inf[i])) {
+                if (S.empty() || prioritet(S.top()) < prioritet(inf[i])) {
                     S.push(inf[i]);
-                }
-                else
-                {
-                    while (!S.empty() && (prioritet(S.top()) >= prioritet(inf[i])))
-                    {
+                } else {
+                    while (!S.empty() && (prioritet(S.top()) >= prioritet(inf[i]))) {
                         out[j++] = S.top();
                         S.pop();
                     }
                     S.push(inf[i]);
                 }
-            }
-            else
-            {
-                if (inf[i] == '(')
-                {
+            } else {
+                if (inf[i] == '('){
                     S.push(inf[i]);
-                }
-                else
-                {
-                    if (inf[i] == ')')
-                    {
-                        if (S.empty() || S.top() == '(')
-                        {
+                } else {
+                    if (inf[i] == ')') {
+                        if (S.empty() || S.top() == '(') {
                             cout << "Input error!";
                             _getch();
                             exit(1);
-                        }
-                        else
-                        {
-                            while (S.top() != '(')
-                            {
+                        } else {
+                            while (S.top() != '(') {
                                 out[j] = S.top();
                                 S.pop();
                                 j++;
@@ -100,15 +75,11 @@ std::string infx2pstfx(std::string inf) {
             }
         }
     }
-    while (!S.empty())
-    {
-        if (S.top() == '(')
-        {
+    while (!S.empty()) {
+        if (S.top() == '(') {
             cout << "Input error!";
             _getch(); exit(1);
-        }
-        else
-        {
+        } else {
             out[j] = S.top();
             S.pop();
             j++;
@@ -117,37 +88,30 @@ std::string infx2pstfx(std::string inf) {
 
 }
 
-int eval(std::string out)
-{
+int eval(std::string out) {
     int j = 0, c = 0, r1 = 0, r2 = 0;
     stack <double> S;
     stack <double> S1;
     char num[256];
     char* pEnd = nullptr;
-    while (out[j] != '\0')
-    {
+    while (out[j] != '\0') {
         if (out[j] == '_') {
             ++j;
             continue;
         }
-        if (out[j] >= '0' && out[j] <= '9')
-        {
+        if (out[j] >= '0' && out[j] <= '9') {
             long iNum = strtol(&out[j], &pEnd, 10);
             S.push(iNum);
             j += pEnd - &out[j];
-        }
-        else
-        {
-            if (is_op(out[j]))
-            {
+        } else {
+            if (is_op(out[j])) {
                 r1 = S.top(); S.pop();
                 r2 = S.top(); S.pop();
-                switch (out[j])
-                {
-                case '+': S.push(r2 + r1); break;
-                case '-': S.push(r2 - r1); break;
-                case '*': S.push(r2 * r1); break;
-                case '/': S.push(r2 / r1); break;
+                switch (out[j]) {
+                    case '+': S.push(r2 + r1); break;
+                    case '-': S.push(r2 - r1); break;
+                    case '*': S.push(r2 * r1); break;
+                    case '/': S.push(r2 / r1); break;
                 }
             }
             ++j;

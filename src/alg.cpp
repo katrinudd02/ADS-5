@@ -5,7 +5,7 @@
 
 int prioritet(char v) {
     switch (v) {
-        case '(':
+        case '(': return 0;
         case ')': return 1;
         case '+':
         case '-': return 2;
@@ -17,7 +17,8 @@ int prioritet(char v) {
 
 bool is_op(std::string pref) {
     for (size_t i = 0; i < pref.size(); ++i) {
-        if (pref[i] == '+' || pref[i] == '-' || pref[i] == '*' || pref[i] == '/')
+        if (pref[i] == '+' || pref[i] == '-' || 
+            pref[i] == '*' || pref[i] == '/')
             return true;
     }
     return false;
@@ -32,16 +33,12 @@ bool is_digit(std::string pref) {
 }
 
 int calculator(char symbol, int a, int b) {
-    if (symbol == '+') {
-        return (a + b);
-    } else if (symbol == '-') {
-        return (b - a);
-    } else if (symbol == '*') {
-        return (a * b);
-    } else if ((symbol == '/') && (a != 0)) {
-        return (b / a);
-    } else {
-        return 0;
+    switch (symbol) {
+        case '*': return a * b;
+        case '/': return a / b;
+        case '-': return a - b;
+        case '+': return a + b;
+        default: return -1;
     }
 }
 
@@ -98,7 +95,7 @@ int eval(std::string out) {
             resultStack.pop();
             b = resultStack.get();
             resultStack.pop();
-            resultStack.push(calculator(out[i], a, b));
+            resultStack.push(calculator(out[i], b, a));
         }
     }
     result = resultStack.get();

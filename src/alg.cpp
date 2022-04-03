@@ -38,7 +38,7 @@ int calculator(char symbol, int a, int b) {
 }
 
 std::string infx2pstfx(std::string inf) {
-    stack <char, 100> S;
+    TStack <char, 100> S;
     std::string out;
     int i = 0, j = 0;
     for (; inf[i] != '\0'; ++i) {

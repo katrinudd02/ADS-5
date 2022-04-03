@@ -1,11 +1,5 @@
-#include <iostream>
-#include <cctype>
-#include <cstdio>
-#include <stack>
 #include <string>
 #include <map>
-#include <stdlib.h>
-#include <conio.h>
 #include "tstack.h"
 
 int prioritet(char v) {

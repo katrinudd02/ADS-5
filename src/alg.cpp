@@ -15,15 +15,6 @@ int prioritet(char v) {
     return -1;
 }
 
-bool is_op(std::string pref) {
-    for (size_t i = 0; i < pref.size(); ++i) {
-        if (pref[i] == '+' || pref[i] == '-' || 
-            pref[i] == '*' || pref[i] == '/')
-            return true;
-    }
-    return false;
-}
-
 bool is_digit(std::string pref) {
     for (size_t i = 0; i < pref.size(); ++i) {
         if (pref[i] < '0' || pref[i] > '9')
@@ -35,8 +26,8 @@ bool is_digit(std::string pref) {
 int calculator(char symbol, int a, int b) {
     switch (symbol) {
         case '*': return a * b;
-        case '/': return a / b;
-        case '-': return a - b;
+        case '/': return b / a;
+        case '-': return b - a;
         case '+': return a + b;
         default: return -1;
     }

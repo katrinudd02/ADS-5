@@ -43,8 +43,8 @@ std::string infx2pstfx(std::string inf) {
     int i = 0, j = 0;
     for (; inf[i] != '\0'; ++i) {
         int pr = prioritet(inf[i]);
-        if (pr == 0 || p > prioritet(S.get()) || S.isEmpty()) {
-            out.push(inf[i]);
+        if (pr == 0 || pr > prioritet(S.get()) || S.isEmpty()) {
+            out.push_back(inf[i]);
         } else {
             if (pr == 1) {
                 while (S.get() != '(') {
@@ -85,7 +85,7 @@ int eval(std::string out) {
             resultStack.pop();
             b = resultStack.get();
             resultStack.pop();
-            resultStack.push(calculator(out[k], a, b));
+            resultStack.push(calculator(out[i], a, b));
         }
     }
     result = resultStack.get();

@@ -1,3 +1,4 @@
+// Copyright 2021 NNTU-CS
 #include <string>
 #include <map>
 #include "tstack.h"
@@ -27,7 +28,7 @@ int calculator(char symbol, int a, int b) {
         return (a + b);
     } else if (symbol == '-') {
         return (b - a);
-    } else if (sembol == '*') {
+    } else if (symbol == '*') {
         return (a * b);
     } else if ((symbol == '/') && (a != 0)) {
         return (b / a);
@@ -54,7 +55,7 @@ std::string infx2pstfx(std::string inf) {
                 if (S.empty() || prioritet(S.top()) < prioritet(inf[i])) {
                     S.push(inf[i]);
                 } else {
-                    while (!S.empty() && (prioritet(S.top()) 
+                    while (!S.empty() && (prioritet(S.top())
                                           >= prioritet(inf[i]))) {
                         out[j++] = S.top();
                         S.pop();
@@ -112,6 +113,6 @@ int eval(std::string out) {
             resultStack.push(calculator(out[k], a, b));
         }
     }
-    result = resultStack.get();    
+    result = resultStack.get();
     return result;
 }

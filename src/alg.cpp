@@ -7,9 +7,9 @@ int prioritet(char v) {
     switch (v) {
         case '(': return 0;
         case ')': return 1;
-        case '+':
+        case '+': return 2;
         case '-': return 2;
-        case '*':
+        case '*': return 3;
         case '/': return 3;
     }
     return -1;
@@ -26,8 +26,8 @@ bool is_digit(std::string pref) {
 int calculator(char symbol, int a, int b) {
     switch (symbol) {
         case '*': return a * b;
-        case '/': return b / a;
-        case '-': return b - a;
+        case '/': return a / b;
+        case '-': return a - b;
         case '+': return a + b;
         default: return -1;
     }
@@ -74,21 +74,23 @@ std::string infx2pstfx(std::string inf) {
 
 int eval(std::string out) {
     int result = 0;
-    TStack <int, 100> resultStack;
     int i = 0;
     int a = 0;
     int b = 0;
-    for (; i < out.size(); i++) {
+    while (i < out.lenght()) {
         if (prioritet(out[i]) == -1) {
-            resultStack.push(out[i] - '0');
+            if (out[i] != ' ') {
+                S.push(out[i] - '0');
+            }
         } else if (prioritet(out[i]) < 4) {
-            a = resultStack.get();
-            resultStack.pop();
-            b = resultStack.get();
-            resultStack.pop();
-            resultStack.push(calculator(out[i], b, a));
+            a = S.get();
+            S.pop();
+            b = S.get();
+            S.pop();
+            S.push(calculator(out[i], b, a));
         }
+        i++;
     }
-    result = resultStack.get();
+    result = S.get();
     return result;
 }

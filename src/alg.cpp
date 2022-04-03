@@ -15,12 +15,20 @@ int prioritet(char v) {
     return -1;
 }
 
-bool is_op(char c) {
-    return c == '+' || c == '-' || c == '*' || c == '/';
+bool is_op(std::string pref) {
+    for (size_t i = 0; i < pref.size(); ++i) {
+        if (pref[i] == '+' || pref[i] == '-' || pref[i] == '*' || pref[i] == '/')
+            return true;
+    }
+    return false;
 }
 
-bool is_digit(char c) {
-    return c >= '0' && c <= '9';
+bool is_digit(std::string pref) {
+    for (size_t i = 0; i < pref.size(); ++i) {
+        if (pref[i] < '0' || pref[i] > '9')
+            return false;
+    }
+    return true;
 }
 
 int calculator(char symbol, int a, int b) {
@@ -41,9 +49,14 @@ std::string infx2pstfx(std::string inf) {
     TStack <char, 100> S;
     std::string out;
     int i = 0, j = 0;
-    for (; inf[i] != '\0'; ++i) {
+    for (; inf[i] != '\0'; i++) {
         int pr = prioritet(inf[i]);
-        if (pr == 0 || pr > prioritet(S.get()) || S.isEmpty()) {
+        if (pr == -1) {
+            if (!out.empty() && prioritet(inf[i - 1]) != -1) {
+                out.push_back(' ');
+            }
+            out.push_back(inf[i]);
+        } else if (pr == 0 || pr > prioritet(S.get()) || S.isEmpty()) {
             out.push_back(inf[i]);
         } else {
             if (pr == 1) {

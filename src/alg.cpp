@@ -77,7 +77,7 @@ int eval(std::string out) {
     int i = 0;
     int a = 0;
     int b = 0;
-    while (i < out.lenght()) {
+    while (i < out.length()) {
         if (prioritet(out[i]) == -1) {
             if (out[i] != ' ') {
                 S.push(out[i] - '0');
